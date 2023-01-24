@@ -1,17 +1,18 @@
 package entidades;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Trabalho {
     private String name;
     private NiveisDoFuncionario nivel;
-        private double SalarioBasico;
+    private double SalarioBasico;
 
     private Departamento departamento;
     private List<HoraDeContrato> contratos = new ArrayList<>();
 
-    public Trabalho() {
+    public Trabalho(String nomeDoTrabalhador, String s, double salarioBase, Departamento departamento) {
     }
 
     public Trabalho(String name, NiveisDoFuncionario nivel, double salarioBasico, Departamento departamento) {
@@ -57,18 +58,27 @@ public class Trabalho {
         return contratos;
     }
 
-    public void AdicionarContrato(HoraDeContrato contrato){
-    contratos.add(contrato);
-    }
-    public void RemoverContra(HoraDeContrato contrato){
-       contratos.remove(contrato);
-    }
-    public double RendaTrabalhador(int ano, int mes){
-    double sum = SalarioBasico;
-    for (HoraDeContrato c : contratos){
-
+    public void AdicionarContrato(HoraDeContrato contrato) {
+        contratos.add(contrato);
     }
 
-        return sum;
+    public void RemoverContra(HoraDeContrato contrato) {
+        contratos.remove(contrato);
+    }
+
+    public double RendaTrabalhador(int ano, int mes) {
+        double soma = SalarioBasico;
+        Calendar call = Calendar.getInstance();
+        for (HoraDeContrato c : contratos) {
+            call.setTime(c.getDate());
+            int c_ano = call.get(Calendar.YEAR);
+
+            int c_mes = 1 + call.get(Calendar.MONTH);
+            if (ano == c_ano && mes == c_mes) {
+                soma += c.valorTotal();
+            }
+        }
+        return soma;
+
     }
 }
